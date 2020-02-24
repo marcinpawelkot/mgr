@@ -30,6 +30,7 @@ def team_market_value(page_content):
 
 def keep_top_tier_teams(teams_by_sesons, minimum_number_of_seasons):
     teams_by_season_df = pd.concat(teams_by_sesons).reset_index(drop=True)
-    top_tier_teams = list(teams_by_season_df.groupby(['teams']).count()[
-                              teams_by_season_df.groupby(['teams']).count() == minimum_number_of_seasons].dropna().index)
-    return teams_by_season_df[teams_by_season_df['teams'].isin(top_tier_teams)].reset_index(drop=True)
+    top_tier_teams = list(teams_by_season_df.groupby(['Team']).count()[
+                              teams_by_season_df.groupby(['Team']).count() == minimum_number_of_seasons].dropna().index)
+    return teams_by_season_df[teams_by_season_df['Team'].isin(top_tier_teams)].reset_index(drop=True)
+#utaj zmienic lata i liczbe seoznow!
