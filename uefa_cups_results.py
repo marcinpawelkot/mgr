@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def collect_uefa_ids(page_content):
-    table = BeautifulSoup(str(page_content.findAll('div', {'class': 'grid-box col-xs-12 col-sm-12 col-md-12 col-lg-12'})))
+    table = BeautifulSoup(str(page_content.findAll('tbody')))
     trs = table.find_all('tr')
     ids = [(tr.find('a').text, tr.attrs['data-team-id']) for tr in trs[1:]]
     return ids
