@@ -1,28 +1,27 @@
 import pandas as pd
-from fuzzymatcher import link_table, fuzzy_left_join
-
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
-
-from transfermarkt_teams_in_league import keep_top_tier_teams
 import difflib
-
 
 teams_full_info = pd.read_csv('teams_full_info.csv', index_col=0)
 season_results = pd.read_csv('season_results.csv', index_col=0)
 
-teams_full_info['Team'] = teams_full_info['Team'].str.replace(" ","")
-season_results['Team'] = season_results['Team'].str.replace(" ","")
+def find_closest_name_match(teams_info, teams_result):
+    matches = []
+    for team in teams_info:
+        match = difflib.get_close_matches(team, teams_result)
+        if match:
+            matches.append((team, match[0]))
+        else:
+            matches.append((team, ""))
+    return dict(matches)
 
-teams_full_info["info_key"] = teams_full_info["Team"] + teams_full_info["Country"]
-season_results["results_key"] = season_results["Team"] + season_results["Country"]
+def keep_unique_teams(teams):
+    return pd.DataFrame(pd.unique(teams['Team']), columns=['Team'])
 
-MINIMUM_SEASON = 6
 
-#s = teams_full_info.groupby('Team').count()
+teams_info = keep_unique_teams(teams_full_info)
+teams_result = keep_unique_teams(season_results)
 
-info = pd.DataFrame(pd.unique(teams_full_info['info_key']), columns=['info_key'])
-result = pd.DataFrame(pd.unique(season_results['results_key']), columns=['results_key'])
+teams_matches = find_closest_name_match(teams_info['Team'], teams_result['Team'])
 
 def create_map_teams_names(info, results):
     matches = []
@@ -43,18 +42,6 @@ teams_full_info_with_results = pd.merge(teams_full_info, season_results,
                                         left_on=['info_key', 'Year'],
                                         right_on=['results_key', 'year'])
 teams_full_info_with_results.to_csv("teams_full_info_with_results.csv")
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def fuzzy_merge(df_1, df_2, key1, key2, threshold=0, limit=2):
@@ -87,16 +74,9 @@ key2 = 'results_key'
 merged_teams_names = merge_teams_names(info, result, key1, key2)
 
 
-
-
-
 teams_full_info_with_results['Wins'].dropna(inplace=True)
 teams_full_info_with_results.to_csv('teams_full_info_with_results.csv')
 
 
-from fuzzywuzzy import fuzz
 
 
-
-    
-print (difflib.get_close_matches("abcd", ["abc", "acd", "abdc", "dcba"]))

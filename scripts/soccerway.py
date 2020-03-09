@@ -58,7 +58,7 @@ def prepare_result_table(df):
     new_df_ = new_df[~new_df['Team'].str.contains("Corrections")]
     new_df__ = new_df_[~new_df_['Team'].str.contains("Relegation")]
     new_df__.reset_index(inplace=True, drop=True)
-    columns = ['Team', 'Matches Played', 'Wins', 'Draws', 'Losses', 'Goals Scored', 'Goals Against', 'Goals balance', 'Points', 'year', 'Country']
+    columns = ['Team', 'Matches Played', 'Wins', 'Draws', 'Losses', 'Goals Scored', 'Goals Against', 'Goals balance', 'Points', 'Year', 'Country']
     new_df__.columns = columns
     return new_df__
 
