@@ -26,14 +26,14 @@ class Club:
 
     def to_dict(self):
         return {
-            'stadium_capacity': self.stadium_capacity,
-            'stadium_name': self.stadium_name,
-            'squad_size': self.squad_size,
-            'top_arrival': self.top_arrival,
-            'top_departure': self.top_departure,
-            'income_value': self.balance['income_value'],
-            'expenditure_values': self.balance['expenditure_values'],
-            'overall_balance': self.balance['overall_balance'],
+            'StadiumCapacity': self.stadium_capacity,
+            'StadiumName': self.stadium_name,
+            'SquadSize': self.squad_size,
+            'TopArrival': self.top_arrival,
+            'TopDeparture': self.top_departure,
+            'IncomeValue': self.balance['income_value'],
+            'ExpenditureValues': self.balance['expenditure_values'],
+            'OverallBalance': self.balance['overall_balance'],
         }
 
 

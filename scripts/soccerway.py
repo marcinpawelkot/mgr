@@ -27,20 +27,16 @@ def seasons_in_league(content, country):
         seasons.append(line.text)
     return pd.DataFrame(dict(Season=seasons, Link=links, Country=country))
 
-def rounds_table(content, season, country):
-    content = content.findAll('select', {'name': 'round_id'})
-    rounds = BeautifulSoup(str(content))
-    round_name = []
-    round_link = []
-
-    for line in rounds.findAll('option')[:2]:
-        round_link.append(line['value'])
-        round_name.append(line.text)
-
-    return regular_table(round_link[0], season, country), regular_table(round_link[1], season, country)
+def rounds_table(content):
+    content = content.findAll('li', {'class': 'expanded'})
+    rounds = BeautifulSoup(str(content))    
+    slownik = {}
+    for line in rounds.findAll('a'):
+        slownik[line.text] = line.attrs['href']
+    return slownik
 
 
-def regular_table(suffix, season, country):
+def regular_table(suffix, season, country, round_):
     url = 'https://int.soccerway.com/' + suffix
     table = pd.read_html(url,
                         index_col = 0,
@@ -48,17 +44,19 @@ def regular_table(suffix, season, country):
                         attrs = {'class':'leaguetable sortable table detailed-table'})[0]
     table['Year'] = season
     table['Country'] = country
+    table['Round'] = round_
+
     return table
 
 def prepare_result_table(df):
-    columns = ['Team', 'MP', 'W', 'D', 'L', 'F', 'A', 'D.1', 'P', 'Year', 'Country']
+    columns = ['Team', 'MP', 'W', 'D', 'L', 'F', 'A', 'D.1', 'P', 'Year', 'Country', 'Round']
     df = df[columns]
     df.dropna(inplace=True)
     new_df = df[~df['Team'].str.contains("UEFA")]
     new_df_ = new_df[~new_df['Team'].str.contains("Corrections")]
     new_df__ = new_df_[~new_df_['Team'].str.contains("Relegation")]
     new_df__.reset_index(inplace=True, drop=True)
-    columns = ['Team', 'Matches Played', 'Wins', 'Draws', 'Losses', 'Goals Scored', 'Goals Against', 'Goals balance', 'Points', 'Year', 'Country']
+    columns = ['Team', 'MatchesPlayed', 'Wins', 'Draws', 'Losses', 'GoalsScored', 'GoalsAgainst', 'GoalsBalance', 'Points', 'Year', 'Country', 'Round']
     new_df__.columns = columns
     return new_df__
 

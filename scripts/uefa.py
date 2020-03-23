@@ -15,7 +15,7 @@ def uefa_country_rankings(page_content, season):
                              Position=list(range(1, len(countries) + 1))))
 
 
-def similar_leagues(uefa_ranking, distance):
+def keep_similar_leagues(uefa_ranking, distance):
     polish_league_position = uefa_ranking.loc[uefa_ranking['Country'] == 'Poland'].index
     leagues_indices = []
     for position in polish_league_position:
