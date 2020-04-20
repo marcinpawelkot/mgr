@@ -1,16 +1,11 @@
 import numpy as np
 import pandas as pd
 
+from utils.utils import read_input, save_output_to_csv
+
 CSV_FILES_PATH = "../csv/"
 SEASON_START = 2009
 SEASON_END = 2019
-
-def read_input(filename, header=0):
-    return pd.read_csv(CSV_FILES_PATH + filename + ".csv", sep="|", header=header)
-
-
-def save_output_to_csv(output, filename):
-    output.to_csv(CSV_FILES_PATH + filename + ".csv", sep="|", index=False)
 
 
 def prepare_for_record(df):
@@ -59,17 +54,15 @@ el_qualifiers_raw = read_input("el_qualifiers")
 
 cl_qualifiers, el_qualifiers = [], []
 for season in range(SEASON_START, SEASON_END):
-    
-    cl_single_season = cl_qualifiers_raw[cl_qualifiers_raw["Year"]==season].copy()
-    el_single_season = el_qualifiers_raw[el_qualifiers_raw["Year"]==season].copy()
-    
+    cl_single_season = cl_qualifiers_raw[cl_qualifiers_raw["Year"] == season].copy()
+    el_single_season = el_qualifiers_raw[el_qualifiers_raw["Year"] == season].copy()
+
     cl_qualifiers.append(
         calculate_record(fill_results(prepare_for_record(cl_single_season)), season)
-        )
+    )
     el_qualifiers.append(
         calculate_record(fill_results(prepare_for_record(el_single_season)), season)
-        )
-    
+    )
 
 cl_qualifiers_record = pd.concat(cl_qualifiers)
 el_qualifiers_record = pd.concat(el_qualifiers)

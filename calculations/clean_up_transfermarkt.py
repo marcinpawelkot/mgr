@@ -1,16 +1,6 @@
 import pandas as pd
 
-CSV_FILES_PATH = "../csv/"
-SEASON_START = 2009
-SEASON_END = 2019
-
-
-def read_input(filename, header=0):
-    return pd.read_csv(CSV_FILES_PATH + filename + ".csv", sep="|", header=header)
-
-
-def save_output_to_csv(output, filename):
-    output.to_csv(CSV_FILES_PATH + filename + ".csv", sep="|", index=False)
+from utils.utils import read_input, save_output_to_csv
 
 
 def change_transfers_to_numerical(teams):
