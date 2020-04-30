@@ -11,8 +11,15 @@ def uefa_ids(page_content):
     countries = [td.text for td in tds]
     return pd.DataFrame(dict(CountryCode=countries, Team=teams, UefaId=ids))
 
+
 def results_table(url, club_id):
     table = pd.read_html(url + club_id + '/profile/history/index.html',
                          header=0)
     table[0]['UefaId'] = club_id
     return table[0]
+
+
+def countries_codes():
+    url = 'https://en.wikipedia.org/wiki/List_of_FIFA_country_codes'
+    table = pd.concat(pd.read_html(url)[:4])
+    return dict(zip(table['Code'], table['Country']))

@@ -1,8 +1,8 @@
 import pandas as pd
 
+from helpers.utils import cleanup_dataframe, save_output_to_csv, save_list_to_csv
 from runner_base import RunnerBase
 from scrapers.uefa_country_coefficients import uefa_country_rankings
-from utils.utils import cleanup_dataframe, save_output_to_csv, save_list_to_csv
 
 
 class UefaCoefficients(RunnerBase):

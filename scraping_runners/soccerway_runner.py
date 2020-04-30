@@ -1,6 +1,6 @@
+from helpers.utils import cleanup_dataframe, save_output_to_csv
 from runner_base import RunnerBase
 from scrapers.soccerway import *
-from utils.utils import cleanup_dataframe, save_output_to_csv
 
 
 class Soccerway(RunnerBase):

@@ -1,0 +1,11 @@
+from formatters import format_transfermarkt_data
+from calculations import calculate_qualifiers_record, calculate_sfa_score, calculate_european_cups_record
+from merging import match_by_name_various_sources, merge_transfermarkt_qualifiers
+
+
+format_transfermarkt_data.run()
+calculate_qualifiers_record.run()
+match_by_name_various_sources.run()
+merge_transfermarkt_qualifiers.run()
+calculate_european_cups_record.run()
+calculate_sfa_score.run()

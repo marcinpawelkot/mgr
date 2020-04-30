@@ -1,8 +1,8 @@
 import pandas as pd
 
+from helpers.utils import save_output_to_csv, read_input, cleanup_dataframe
 from runner_base import RunnerBase
 from scrapers.transfermarkt_detailed_team import *
-from utils.utils import save_output_to_csv, read_input, cleanup_dataframe
 
 
 class TransfermarktDetailedClubs(RunnerBase):

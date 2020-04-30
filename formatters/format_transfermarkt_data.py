@@ -1,6 +1,6 @@
 import pandas as pd
 
-from utils.utils import read_input, save_output_to_csv
+from helpers.utils import read_input, save_output_to_csv
 
 
 def change_transfers_to_numerical(teams):
@@ -15,7 +15,7 @@ def change_age_to_numerical(teams):
 
 def convert_units(teams):
     repl_dict = {'[kK]': '*1e3', '[mM]': '*1e6', '[bB]': '*1e9', }
-    columns = ["TopArrival", "TopDeparture", "IncomeValue", "ExpenditureValues", "OverallBalance", "Difference"]
+    columns = ["Value", "TopArrival", "TopDeparture", "IncomeValue", "ExpenditureValues", "OverallBalance", "Difference"]
 
     for col in columns:
         teams[col] = teams[col].str.replace("€", "")
@@ -25,13 +25,11 @@ def convert_units(teams):
     return teams
 
 
-teams_general = read_input("teams_general")
-teams_detailed = read_input("teams_detailed")
-
-teams = pd.merge(teams_general, teams_detailed, left_index=True, right_index=True)
-
-change_transfers_to_numerical(teams)
-change_age_to_numerical(teams)
-teams = convert_units(teams)
-
-save_output_to_csv(teams, "teams")
+def run():
+    teams_general = read_input("teams_general")
+    teams_detailed = read_input("teams_detailed")
+    teams = pd.merge(teams_general, teams_detailed, left_index=True, right_index=True)
+    change_transfers_to_numerical(teams)
+    change_age_to_numerical(teams)
+    teams = convert_units(teams)
+    save_output_to_csv(teams, "teams")

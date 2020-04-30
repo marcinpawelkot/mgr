@@ -1,8 +1,8 @@
 import pandas as pd
 
-from runner_base import RunnerBase
+from helpers.utils import save_output_to_csv
+from .runner_base import RunnerBase
 from scrapers.transfermarkt_general_team import *
-from utils.utils import save_output_to_csv
 
 
 class TransfermarktClubs(RunnerBase):
@@ -33,7 +33,11 @@ class TransfermarktClubs(RunnerBase):
 
         return pd.concat(teams_per_season_league).reset_index(drop=True)
 
+    def get_id_from_link(self, teams):
+        teams["TransfermarktId"] = teams["Link"].str.split(expand=True, pat='/')[4]
+
     def run(self):
         teams = self.keep_top_tier_teams(teams_per_season_league=self.collect_teams(),
                                          minimum_number_of_seasons=self.MINIMUM_SEASON)
+        self.get_id_from_link(teams)
         save_output_to_csv(output=teams, filename="teams_general")

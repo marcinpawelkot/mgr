@@ -1,8 +1,8 @@
 import numpy as np
 
+from helpers.utils import cleanup_dataframe, save_output_to_csv
 from runner_base import RunnerBase
 from scrapers.uefa_european_cups import *
-from utils.utils import cleanup_dataframe, save_output_to_csv
 
 
 class UefaEuropeanCups(RunnerBase):
@@ -37,19 +37,25 @@ class UefaEuropeanCups(RunnerBase):
         return european_cup
 
     def relevant_seasons(self, all_seasons):
-        all_seasons = all_seasons[all_seasons["Competition"].isin(["UEFA Europe League", "UEFA Champions League"])]
+        all_seasons = all_seasons[all_seasons["Competition"].isin(["UEFA Europa League", "UEFA Champions League"])]
         return all_seasons[(all_seasons['Season'].str[:4].astype(int) >= self.SEASON_START) & (
                 all_seasons['Season'].str[:4].astype(int) < self.SEASON_END)]
+
+    def map_countries_codes_to_full_names(self, european_cups_record):
+        countries_map = countries_codes()
+        european_cups_record['Country'] = european_cups_record['CountryCode'].map(countries_map)
+        return european_cups_record[european_cups_record['Country'].isin(self.similar_leagues())]
 
     def format_european_cups_record(self, european_cups_record):
         european_cups_record = european_cups_record.replace(np.nan, '', regex=True)
         european_cups_record = self.relevant_seasons(european_cups_record)
+        european_cups_record = self.map_countries_codes_to_full_names(european_cups_record)
         european_cups_record['Year'] = european_cups_record['Season'].str[:4].astype(int)
         european_cups_record['Stage'] = european_cups_record['Stage'] + european_cups_record['Stage reached']
         european_cups_record.rename(columns={"P": "MatchesPlayed", "W": "Wins", "D": "Draws", "L": "Losses"},
                                     inplace=True)
         return european_cups_record[
-            ["CountryCode", "Team", 'Year', 'UefaId', 'Competition', 'Stage', 'MatchesPlayed', 'Wins', 'Draws',
+            ["Country", "Team", 'Year', 'UefaId', 'Competition', 'Stage', 'MatchesPlayed', 'Wins', 'Draws',
              'Losses']]
 
     def run(self):

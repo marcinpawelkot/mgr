@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from utils.utils import read_list_from_csv, read_input
+from helpers.utils import read_list_from_csv, read_input
 
 
 class RunnerBase:

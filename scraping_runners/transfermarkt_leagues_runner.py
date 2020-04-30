@@ -1,8 +1,8 @@
 import pandas as pd
 
+from helpers.utils import save_output_to_csv
 from runner_base import RunnerBase
 from scrapers.transfermarkt_leagues import league_links, top_tier_leagues_links
-from utils.utils import save_output_to_csv
 
 
 class TransfermarktLeagues(RunnerBase):
