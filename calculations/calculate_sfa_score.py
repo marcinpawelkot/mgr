@@ -31,11 +31,11 @@ def calculate_score_for_single_cup(teams, cup):
 
 
 def calculate_score(teams):
-    teams["Score"] = DL_WEIGHT * teams["ScoreDL"]
-    + EL_WEIGHT * teams["ScoreEL"]
-    + ELQ_WEIGHT * teams["ScoreELQ"]
-    + CLQ_WEIGHT * teams["ScoreCLQ"]
-    + CL_WEIGHT * teams["ScoreCL"]
+    teams["Score"] = DL_WEIGHT * teams["ScoreDL"] \
+                     + EL_WEIGHT * teams["ScoreEL"] \
+                     + ELQ_WEIGHT * teams["ScoreELQ"] \
+                     + CLQ_WEIGHT * teams["ScoreCLQ"] \
+                     + CL_WEIGHT * teams["ScoreCL"]
 
 
 def run():
